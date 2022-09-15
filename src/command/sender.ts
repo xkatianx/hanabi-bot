@@ -6,6 +6,7 @@ export const sendFunctions = {
   tableLeave,
   getGameInfo1,
   getGameInfo2,
+  loaded,
   chatPM,
   tableCreate,
   tableJoin,
@@ -33,6 +34,10 @@ function getGameInfo2 (this: Bot, tableID?: number): void {
   tableID = tableID ?? this.tid ?? 0
   this.sendCommand('getGameInfo2', { tableID })
 }
+function loaded (this: Bot, tableID?: number): void {
+  tableID = tableID ?? this.tid ?? 0
+  this.sendCommand('loaded', { tableID })
+}
 
 function chatPM (this: Bot, recipient: string, msg: string, room = 'lobby'): void {
   this.sendCommand('chatPM', { recipient, msg, room })
@@ -57,6 +62,7 @@ function tableCreate (this: Bot, name = 'bot table'): string {
   const password = (Math.random() * 900 + 100).toFixed()
   const maxPlayers = 5
   this.sendCommand('tableCreate', { password, options, maxPlayers, name })
+  this.tpw = password
   return password
 }
 

@@ -31,10 +31,6 @@ export namespace Command {
     variantName: string // 'No Variant'
   }
 
-  // --------
-  //  we get
-  // --------
-
   export namespace Get {
     export interface welcome {
       username: string
@@ -194,6 +190,9 @@ export namespace Command {
     export interface getGameInfo2 {
       tableID: number
     }
+    export interface loaded {
+      tableID: number
+    }
     export interface chatPM {
       recipient: string
       msg: string
@@ -217,7 +216,7 @@ export namespace Command {
     export interface action {
       tableID: number
       target: number // (type = 0) deck-index, (type = 2) player index
-      type: number // 0 = play, 2 = clue color
+      type: number // 0 = play, 1 = discard, 2 = clue color, 3 = clue rank
       value?: number // 2 = (2+1)-th color/rank
     }
   }

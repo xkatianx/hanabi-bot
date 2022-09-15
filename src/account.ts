@@ -4,7 +4,7 @@ import { env } from './misc/env.js'
 /** Returns [username, password] */
 export async function getAccount (): Promise<string[]> {
   let accountID = env.accountID
-  if (accountID == null) {
+  if (accountID === 0) {
     accountID = Number(await new Q('Please choose your account: (1~6)').ask())
     Q.end()
   }
