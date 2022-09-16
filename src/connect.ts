@@ -37,12 +37,20 @@ export async function connectHTTPS (username: string, password: string): Promise
   })
 }
 
-export function connectWSS (cookie: string): WebSocket {
+type CommandHandler = (command: string, arg: string) => void
+export function connectWSS (cookie: string, commandHandler: CommandHandler): WebSocket {
   const ws = new WebSocket('wss://hanab.live/ws', { headers: { Cookie: cookie } })
 
-  // Pass the websocket to utils
-  // Utils.globalModify({ ws })
-  // Utils.initConsole()
+  ws.on('message', (data: Buffer) => {
+    // Websocket messages are in the format: commandName {"field_name":"value"}
+    const str = data.toString()
+    const ind = str.indexOf(' ')
+    const [command, arg] = [str.slice(0, ind), str.slice(ind + 1)]
+    if (!ignoreCommands.includes(command)) debug(command, arg)
+
+    // Handle the command
+    commandHandler(command, arg)
+  })
 
   ws.on('open', () => debug('Established websocket connection!'))
   ws.on('error', (err) => debug('Websocket error:', err))
@@ -50,3 +58,20 @@ export function connectWSS (cookie: string): WebSocket {
 
   return ws
 }
+
+// for debug
+const ignoreCommands = [
+  'connected',
+  'clock',
+  'voteChange',
+  'chatTyping',
+  'spectators',
+  'userLeft',
+  'user',
+  'userInactive',
+  'table',
+  'tableGone',
+  'chatList',
+  'tableList',
+  'userList'
+]

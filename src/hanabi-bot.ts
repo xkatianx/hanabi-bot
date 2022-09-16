@@ -22,24 +22,14 @@ export class Bot {
   constructor (username: string, cookie: string, ai: AI) {
     this.username = username
     this.ai = ai
-    this.#ws = connectWSS(cookie)
-    this.#ws.on('message', (data: Buffer) => {
-      // Websocket messages are in the format: commandName {"field_name":"value"}
-      const str = data.toString()
-      const ind = str.indexOf(' ')
-      const [command, arg] = [str.slice(0, ind), str.slice(ind + 1)]
-      if (!['connected', 'clock', 'voteChange', 'chatTyping', 'spectators', 'userLeft', 'user', 'userInactive', 'table', 'tableGone', 'chatList', 'tableList', 'userList'].includes(command)) debug(command, arg)
-
-      // Handle the command
-      this.handleCommand(command, arg)
-    })
+    this.#ws = connectWSS(cookie, this.handleCommand)
   }
 
   // ----------------
   //  handle command
   // ----------------
 
-  handleCommand (this: Bot, command: string, arg: string): void {
+  handleCommand (command: string, arg: string): void {
     if (command === 'error') return fail('from ws:', arg)
     if (command === 'warning') return warn('from ws:', arg)
 
