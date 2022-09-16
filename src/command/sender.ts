@@ -1,3 +1,4 @@
+import { DefaultVariantName } from '../constant.js'
 import { Bot } from '../hanabi-bot'
 
 export const sendFunctions = {
@@ -56,7 +57,7 @@ const options = {
   timeBase: 0,
   timePerTurn: 0,
   timed: false,
-  variantName: 'No Variant'
+  variantName: DefaultVariantName
 }
 function tableCreate (this: Bot, name = 'bot table'): string {
   const password = (Math.random() * 900 + 100).toFixed()

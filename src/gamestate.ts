@@ -2,10 +2,11 @@ import { Command } from './command'
 import { Deck } from './card/deck.js'
 import { debug } from './misc/cli.js'
 import { Player } from './card/player.js'
+import { MaxClueNum } from './constant.js'
 
 export class GameState {
   turn_count = 0
-  clue_tokens = 8
+  clue_tokens = MaxClueNum
   playerNames: string[]
   numPlayers: number
   ourPlayerIndex: number
@@ -119,7 +120,7 @@ export class GameState {
     const player = this.players[action.playerIndex]
     player.remove(action.order)
     if (this.deck.update_by_play(action)) this.clue_tokens++
-    if (this.clue_tokens > 8) this.clue_tokens = 8
+    if (this.clue_tokens > MaxClueNum) this.clue_tokens = MaxClueNum
     this.play_stacks[action.suitIndex]++
     debug(player.toString())
   }
@@ -162,6 +163,6 @@ export class GameState {
   }
 
   canDiscard (): boolean {
-    return this.clue_tokens < 8
+    return this.clue_tokens < MaxClueNum
   }
 }

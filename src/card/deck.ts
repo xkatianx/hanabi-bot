@@ -1,4 +1,5 @@
 import { Command } from '../command/index.js'
+import { SuitReversedSuffix } from '../constant.js'
 import { fatal } from '../misc/cli.js'
 import { Card } from './card.js'
 import { CardTypeGame } from './cardtype.js'
@@ -43,7 +44,7 @@ export class Deck {
       // TODO: U/D
       let playDists = [-1, 0, 1, 2, 3, 4]
       // reversed
-      if (name.match('Reversed') != null) playDists = [-1, 4, 3, 2, 1, 0]
+      if (name.match(SuitReversedSuffix) != null) playDists = [-1, 4, 3, 2, 1, 0]
 
       // TODO: prism
       let touchingColors: number[] | boolean = []
