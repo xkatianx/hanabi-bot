@@ -1,5 +1,6 @@
 import { DefaultVariantName } from '../constant.js'
 import { Bot } from '../hanabi-bot'
+import { randBetween } from '../misc/math.js'
 
 export const sendFunctions = {
   tableStart,
@@ -60,7 +61,7 @@ const options = {
   variantName: DefaultVariantName
 }
 function tableCreate (this: Bot, name = 'bot table'): string {
-  const password = (Math.random() * 900 + 100).toFixed()
+  const password = String(randBetween(100, 999))
   const maxPlayers = 5
   this.sendCommand('tableCreate', { password, options, maxPlayers, name })
   this.tpw = password

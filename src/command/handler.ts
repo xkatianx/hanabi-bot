@@ -10,10 +10,7 @@ import { Bot } from '../hanabi-bot'
  */
 export function welcome (bot: Bot, data: Command.Get.welcome): void {
   const tableID = data.playingAtTables[0]
-  if (tableID != null) {
-    bot.tableReattend(tableID)
-    bot.tid = tableID
-  }
+  if (tableID != null) bot.tableReattend(tableID)
 }
 
 /** We joined a table */
@@ -30,6 +27,7 @@ export function joined (bot: Bot, data: Command.Get.joined): void {
  * The server will respond with an 'init' command.
  */
 export function tableStart (bot: Bot, data: Command.Get.tableStart): void {
+  bot.tid = data.tableID
   bot.getGameInfo1()
 }
 

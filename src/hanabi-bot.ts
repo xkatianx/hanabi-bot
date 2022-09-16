@@ -15,6 +15,7 @@ export class Bot {
   tid?: number
   /** the password of the table where I create */
   tpw: string = ''
+  /** deal with situations where gameAction comes before gameActionList */
   isMidGame = false
   ai: AI
   gamestate?: GameState
