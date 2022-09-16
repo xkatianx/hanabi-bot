@@ -1,11 +1,11 @@
 import WebSocket from 'ws'
 import { getAccount } from './account.js'
-import { AI, MyAction } from './ai/main.js'
+import { AI, MyAction } from './ai/ai.js'
 import { chat, gameAction, gameActionList, init, joined, tableStart, welcome } from './command/handler.js'
 import { Command } from './command/index.js'
 import { sendFunctions } from './command/sender.js'
 import { connectHTTPS, connectWSS } from './connect.js'
-import { GameState } from './gamestate.js'
+import { GameState } from './ai/gamestate.js'
 import { debug, fail, fatal, warn } from './misc/cli.js'
 
 export class Bot {

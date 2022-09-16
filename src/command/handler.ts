@@ -1,5 +1,5 @@
 import { Command } from '.'
-import { GameState } from '../gamestate.js'
+import { GameState } from '../ai/gamestate.js'
 import { Bot } from '../hanabi-bot'
 
 /**

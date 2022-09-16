@@ -1,4 +1,4 @@
-import { AI } from '../main'
+import { AI } from '../ai'
 
 export class RSAI extends AI {
 
