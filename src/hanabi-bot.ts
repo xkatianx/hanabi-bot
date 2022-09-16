@@ -23,7 +23,7 @@ export class Bot {
   constructor (username: string, cookie: string, ai: AI) {
     this.username = username
     this.ai = ai
-    this.#ws = connectWSS(cookie, this.handleCommand)
+    this.#ws = connectWSS(cookie, this.handleCommand.bind(this))
   }
 
   // ----------------
