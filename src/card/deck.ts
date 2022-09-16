@@ -3,8 +3,8 @@ import { SuitReversedSuffix } from '../constant.js'
 import { fatal } from '../misc/cli.js'
 import { Card } from './card.js'
 import { CardTypeGame } from './cardtype.js'
-import { abbreviate, COLOR, isColor } from './color.js'
-import { variants, suits } from './variant.js'
+import { abbreviate, COLOR, isColor, Color, suits } from './color.js'
+import { variants } from './variant.js'
 
 export class Deck {
   name: string
@@ -15,7 +15,7 @@ export class Deck {
   deck: CardTypeGame[] = []
   orders: Card[] = []
   cardAmount: number
-  colors: Array<keyof typeof COLOR> = []
+  colors: Color[] = []
   validColors: number[] = []
   validRanks: number[] = []
 
@@ -34,6 +34,7 @@ export class Deck {
       const name = this.suits[suit]
       const abbr = this.suitAbbr[suit]
       const suitObj = suits[name]
+      if (suitObj == null) fatal('unable to find suit:', name)
 
       let cardAmounts = [0, 3, 2, 2, 2, 1]
       // black
@@ -55,10 +56,9 @@ export class Deck {
         if (clueColors.length === 0) {
           for (const color in COLOR) {
             if (!isColor(color)) fatal()
-            if (suitObj.name.match(color) != null) {
-              clueColors.push(color)
-              break
-            }
+            if (suitObj.name.match(color) == null) continue
+            clueColors.push(color)
+            break
           }
         }
         if (clueColors.length === 0) fatal('unknown suit:', suitObj.name)
