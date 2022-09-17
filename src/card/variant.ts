@@ -1,8 +1,22 @@
 import axios from 'axios'
 import { fatal } from '../misc/cli.js'
-import { Variant } from './index.js'
 
 const variantJsonUrl = 'https://raw.githubusercontent.com/Hanabi-Live/hanabi-live/main/packages/data/src/json/variants.json'
+
+export interface Variant {
+  id: number
+  name: string
+  suits: string[]
+  specialRank?: number
+  specialNoClueColors?: true
+  specialNoClueRanks?: true
+  specialAllClueRanks?: true
+  specialAllClueColors?: true
+  specialDeceptive?: true
+  clueRanks?: number[]
+  criticalFours?: true
+  // and more
+}
 
 const variants: { [id: number]: Variant } = {}
 
