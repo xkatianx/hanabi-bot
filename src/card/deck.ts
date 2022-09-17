@@ -3,7 +3,7 @@ import { SuitReversedSuffix } from '../constant.js'
 import { fatal } from '../misc/cli.js'
 import { Card } from './card.js'
 import { CardTypeGame } from './cardtype.js'
-import { abbreviate, COLOR, isColor, Color, suits } from './color.js'
+import { abbreviate, COLOR, isColor, Color, suits, colors } from './color.js'
 import { variants } from './variant.js'
 
 export class Deck {
@@ -16,8 +16,8 @@ export class Deck {
   orders: Card[] = []
   cardAmount: number
   colors: Color[] = []
-  validColors: number[] = []
-  validRanks: number[] = []
+  validColors: Color[]
+  validRanks: number[]
 
   constructor (variantID: number) {
     const variant = variants[variantID]
@@ -28,6 +28,7 @@ export class Deck {
     this.suitAmount = this.suits.length
 
     this.validRanks = variant.clueRanks ?? [1, 2, 3, 4, 5]
+    this.validColors = colors(variant)
 
     let counter = 0
     for (let suit = 0; suit < this.suitAmount; suit++) {
@@ -45,11 +46,12 @@ export class Deck {
       // TODO: U/D
       let playDists = [-1, 0, 1, 2, 3, 4]
       // reversed
-      if (name.match(SuitReversedSuffix) != null) playDists = [-1, 4, 3, 2, 1, 0]
+      if (name.endsWith(SuitReversedSuffix)) playDists = [-1, 4, 3, 2, 1, 0]
 
-      // TODO: prism
       let touchingColors: number[] | boolean = []
-      if (suitObj.allClueColors === true) touchingColors = true
+      if (suitObj.prism === true) {
+        // prism is rank-wise
+      } else if (suitObj.allClueColors === true) touchingColors = true
       else if (suitObj.noClueColors === true) touchingColors = false
       else {
         const clueColors = suitObj.clueColors ?? []
@@ -61,15 +63,8 @@ export class Deck {
             break
           }
         }
-        if (clueColors.length === 0) fatal('unknown suit:', suitObj.name)
-        for (const c of clueColors) {
-          let id = this.colors.indexOf(c)
-          if (id === -1) {
-            id = this.colors.length
-            this.colors.push(c)
-          }
-          touchingColors.push(id)
-        }
+        touchingColors = clueColors.map(c => this.validColors.indexOf(c))
+        if (touchingColors.length === 0 || touchingColors.includes(-1)) fatal('unknown suit:', suitObj.name)
       }
 
       // TODO: many special ranks
@@ -78,7 +73,9 @@ export class Deck {
       else if (suitObj.noClueRanks === true) touchingRanks.fill(false)
 
       for (let rank = 1; rank < 6; rank++) {
+        if (suitObj.prism === true) touchingColors = [(rank - 1) % this.validColors.length]
         // TODO: tiiah & U/D
+        // maybe better in gamestate to gain a clue when a suit is completed
         const gainClue = playDists[rank] === 4
         const ctg = new CardTypeGame(suit, rank, cardAmounts[rank],
           name, abbr, playDists[rank], gainClue,

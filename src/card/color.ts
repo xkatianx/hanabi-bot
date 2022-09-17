@@ -56,12 +56,6 @@ export const MORECOLOR = {
 }
 Object.freeze(MORECOLOR)
 
-// may ask stackoverflow some time later
-// https://www.typescriptlang.org/play?#code/MYewdgzgLgBAwgeQDIIEowLwwN4FgBQMMATgKYAmAXDAOTE0A0BRA5maWNTS48zAEYAbAK6ku-GkQIBfAlACeAB1LwQgkMUwwA1qXkgAZjAXLD8ZGgIEDwsMCgBLcDFDriEAJJ2R5CjAAUgg7Q1NDEDmAsANoAugCU1HBqGrE4fKCQsK4aEInJxKlYsXwGGgEZ0DBhMGZB0HFphEQwDkb+1RHmKKgNeE3NLvkQAHSKwhAAFu1QxHF8RLJNi0RkUMLEYINuEDJW+BVqpMPqLP7Z7l7APhT+UXQUjLQaAIaRpI808qSC6gDuH2xSBwaPE5vggA
-export function isColor (color: string): color is Color {
-  return color in COLOR
-}
-
 /** ['Ice EA', 'Sapphire EA', 'Sky EA', 'Berry EA', 'Navy EA', 'Dark Pink'] -> ['i', 'a', 's', 'b', 'n', 'd'] */
 export function abbreviate (suits: string[]): string[] {
   const abbrs = Array.from(suits)
@@ -91,6 +85,12 @@ export function abbreviate (suits: string[]): string[] {
   return abbrs
 }
 
+// TODO: ask stackoverflow some time later
+// https://www.typescriptlang.org/play?#code/MYewdgzgLgBAwgeQDIIEowLwwN4FgBQMMATgKYAmAXDAOTE0A0BRA5maWNTS48zAEYAbAK6ku-GkQIBfAlACeAB1LwQgkMUwwA1qXkgAZjAXLD8ZGgIEDwsMCgBLcDFDriEAJJ2R5CjAAUgg7Q1NDEDmAsANoAugCU1HBqGrE4fKCQsK4aEInJxKlYsXwGGgEZ0DBhMGZB0HFphEQwDkb+1RHmKKgNeE3NLvkQAHSKwhAAFu1QxHF8RLJNi0RkUMLEYINuEDJW+BVqpMPqLP7Z7l7APhT+UXQUjLQaAIaRpI808qSC6gDuH2xSBwaPE5vggA
+export function isColor (color: string): color is Color {
+  return color in COLOR
+}
+/** return valid clue colors in order */
 export function colors (variant: Variant): Color[] {
   const colors: Color[] = []
   for (const suit of variant.suits) {
