@@ -1,7 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "start": "tsc && node dist/hanabi-bot.js"
+    "start": "tsc && node dist/hanabi-bot.js",
+    "test": "tsc && node dist/test.js"
   },
   "dependencies": {
     "axios": "^0.27.2",
